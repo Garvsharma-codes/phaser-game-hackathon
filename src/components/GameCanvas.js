@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import IntroScene from "../app/game/scenes/IntroScene";
 import TrialScene from "../app/game/scenes/TrialScene";
+import GameScene from "@/app/game/scenes/GameScene";
+import EnemyDialogueScene from "@/app/game/scenes/EnemyDialogueScene";
+
 
 
 
@@ -19,7 +22,9 @@ export default function GameCanvas() {
       height: window.innerHeight,
       backgroundColor: "#000000",
       parent: "phaser-container",
-      scene: [IntroScene, TrialScene],
+scene: [IntroScene, TrialScene, GameScene, EnemyDialogueScene],
+
+
       scale: {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -152,7 +152,8 @@ export default class TrialScene extends Phaser.Scene {
 
     // End scene (placeholder)
     this.time.delayedCall(1600, () => {
-      console.log("TRIAL COMPLETE → GAMEPLAY");
+this.scene.start("GameScene");
+
       // this.scene.start("GameScene");
     });
   }
