@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Phaser from "phaser";
-import IntroScene from "../app/game/scenes/IntroScene";
-import TrialScene from "../app/game/scenes/TrialScene";
-import GameScene from "@/app/game/scenes/GameScene";
-import EnemyDialogueScene from "@/app/game/scenes/EnemyDialogueScene";
+import IntroScene from "../game_logic/scenes/IntroScene";
+import TrialScene from "../game_logic/scenes/TrialScene";
+import GameScene from "@/game_logic/scenes/GameScene";
+import EnemyDialogueScene from "@/game_logic/scenes/EnemyDialogueScene";
 
 
 

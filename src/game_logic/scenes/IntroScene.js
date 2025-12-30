@@ -39,7 +39,7 @@ export default class IntroScene extends Phaser.Scene {
     this.title = this.add.text(width / 2, height / 2 - 160, "CYBER CITY", {
       fontFamily: "monospace",
       fontSize: "42px",
-      color: "#00ffd5",
+      color: "#27E4D3",
     }).setOrigin(0.5).setAlpha(0);
 
     this.storyTexts = [
@@ -50,7 +50,7 @@ export default class IntroScene extends Phaser.Scene {
       this.add.text(width / 2, height / 2 - 80 + i * 36, line, {
         fontFamily: "monospace",
         fontSize: "20px",
-        color: "#00c2a8",
+        color: "#2BB673",
       }).setOrigin(0.5).setAlpha(0)
     );
 
