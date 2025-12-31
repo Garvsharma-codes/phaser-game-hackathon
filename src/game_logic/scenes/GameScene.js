@@ -6,12 +6,101 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
+
+    this.load.tilemapTiledJSON("townMap", "assets/maps/cityMap.json");
+    this.load.image("townTiles", "assets/images/galletcity_tiles.png");
+
     this.load.image("hero", "/hero.png");
     this.load.image("enemy", "/enemy.png");
     this.load.image("slash", "/slash.png");
   }
 
   create() {
+
+    const map = this.make.tilemap({ key: "townMap" });
+
+    const tileset = map.addTilesetImage(
+      "galletcity_tiles8",
+      "townTiles"
+    );
+
+
+    const ground = map.createLayer("SideWalk", tileset, 0, 0);
+    const roads = map.createLayer("Roads", tileset, 0, 0);
+    const buildings = map.createLayer("Buildings", tileset, 0, 0);
+
+    const collision = map.createLayer("Collision", tileset, 0, 0);
+    collision.setCollisionByProperty({ collides: true });
+
+
+    const playerSpawn = map.findObject(
+      "Player",
+      obj => obj.name === "playerSpawn"
+    );
+
+    this.player = this.physics.add.sprite(
+      playerSpawn.x,
+      playerSpawn.y,
+      "player"
+    );
+
+    this.enemies = this.physics.add.group();
+
+    const enemyObjects = map.getObjectLayer("Enemies")?.objects || [];
+
+    enemyObjects.forEach(obj => {
+      const enemy = this.enemies.create(obj.x, obj.y, obj.type);
+      enemy.name = obj.name;
+    });
+
+
+
+    this.npcs = this.physics.add.staticGroup();
+
+    const npcObjects = map.getObjectLayer("NPC")?.objects || [];
+
+    npcObjects.forEach(obj => {
+      const npc = this.npcs.create(obj.x, obj.y, obj.type);
+      npc.name = obj.name;
+    });
+
+
+    this.gates = this.physics.add.staticGroup();
+
+    const gateObjects = map.getObjectLayer("SageGate")?.objects || [];
+
+    gateObjects.forEach(obj => {
+      const gate = this.gates.create(obj.x, obj.y, null);
+      gate.toMap = obj.properties?.find(p => p.name === "to")?.value;
+    });
+
+
+    this.physics.add.collider(this.player, collision);
+    this.physics.add.collider(this.enemies, collision);
+    this.physics.add.collider(this.player, this.enemies);
+
+    this.physics.add.overlap(this.player, this.npcs, this.onNpcTalk, null, this);
+    this.physics.add.overlap(this.player, this.gates, this.onEnterGate, null, this);
+
+
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(
+      0,
+      0,
+      map.widthInPixels,
+      map.heightInPixels
+    );
+
+
+    this.events.on("update", () => {
+      this.player.setDepth(this.player.y);
+      this.enemies.children.iterate(e => e?.setDepth(e.y));
+      this.npcs.children.iterate(n => n?.setDepth(n.y));
+    });
+
+
+    /*
+
     const { width, height } = this.scale;
     this.cameras.main.setBackgroundColor("#0a0f14");
 
@@ -209,6 +298,6 @@ this.time.delayedCall(1000, () => {
         return { damage: 35, cooldown: 700 };
       default:
         return { damage: 25, cooldown: 500 };
-    }
+    }*/
   }
 }
